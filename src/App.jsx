@@ -1,13 +1,24 @@
-
+import BookList from './components/List/BookList'
+import BookForm from './components/Form/BookForm'
+import Filter from './components/Filter/BookFilter'
 import './App.css'
 
 function App() {
 
   return (
     <div className='app'>
-      <div className="app-header">
+      <header className="app-header">
       <h1>Book</h1>
-      </div>
+      </header>
+      <main className="app-main">
+        <div className="app-left-column">
+          <BookForm/>
+        </div>
+        <div className="app-right-column">
+          <Filter/>
+          <BookList/>
+        </div>
+      </main>
     </div>
   )
 }
