@@ -61,7 +61,7 @@ const BookList = () => {
                 {++i}. {highLightMatch(book.title, titleFilter)}{' '} by {' '} 
                 <strong>
                   {highLightMatch(book.author, authorFilter)}
-                </strong>
+                </strong> ({book.source})
               </div>
               <div className="book-actions">
                 <span onClick={() => handleToggleFavorite(book.id)}>
