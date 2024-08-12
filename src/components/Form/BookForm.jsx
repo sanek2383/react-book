@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { addBook, thunkFunction } from "../../redux/slices/bookSlice"
+import { addBook, fetchBook } from "../../redux/slices/bookSlice"
 import { useDispatch } from "react-redux"
 import createBookWithID from "../../utils/createBookID"
 import booksData from "../../data/books.json"
@@ -22,7 +22,6 @@ const BookForm = () => {
 
     if (title && author) {
       dispatch(addBook(createBookWithID({ title, author }, "manual")))
-
       setAuthor("")
       setTitle("")
     }
@@ -30,7 +29,7 @@ const BookForm = () => {
 
 
   const handleAddRandomBookViaAPI = () => {
-    dispatch(thunkFunction)
+    dispatch(fetchBook())
   }
 
   return (
