@@ -1,8 +1,16 @@
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { BsBookmarkHeartFill, BsBookmarkHeart } from "react-icons/bs"
-import { deleteBook, toggleFavorite, selectBooks } from "../../redux/slices/bookSlice"
-import { selectTitleFilter, selectAuthorFilter, selectOnlyFavoriteFilter } from "../../redux/slices/filterSlice"
+import {
+  deleteBook,
+  toggleFavorite,
+  selectBooks,
+} from "../../redux/slices/bookSlice"
+import {
+  selectTitleFilter,
+  selectAuthorFilter,
+  selectOnlyFavoriteFilter,
+} from "../../redux/slices/filterSlice"
 import "./BookList.css"
 
 const BookList = () => {
@@ -28,18 +36,21 @@ const BookList = () => {
       .toLowerCase()
       .includes(authorFilter.toLowerCase())
     const matchesFavorite = onlyFavoriteFilter ? book.isFavorite : true
-      return matchesTitle && matchesAuthor && matchesFavorite 
+    return matchesTitle && matchesAuthor && matchesFavorite
   })
 
-  const highLightMatch = (text, filter)=>{
+  const highLightMatch = (text, filter) => {
     if (!filter) return text
 
-    const regex = new RegExp(`(${filter})`, 'gi')
+    const regex = new RegExp(`(${filter})`, "gi")
 
     return text.split(regex).map((substring, i) => {
       if (substring.toLowerCase() === filter.toLowerCase()) {
         return (
-          <span key={i} className="highlight">
+          <span
+            key={i}
+            className="highlight"
+          >
             {substring}
           </span>
         )
@@ -58,10 +69,9 @@ const BookList = () => {
           {filteredBooks.map((book, i) => (
             <li key={book.id}>
               <div className="book-info">
-                {++i}. {highLightMatch(book.title, titleFilter)}{' '} by {' '} 
-                <strong>
-                  {highLightMatch(book.author, authorFilter)}
-                </strong> ({book.source})
+                {++i}. {highLightMatch(book.title, titleFilter)} by{" "}
+                <strong>{highLightMatch(book.author, authorFilter)}</strong> (
+                {book.source})
               </div>
               <div className="book-actions">
                 <span onClick={() => handleToggleFavorite(book.id)}>

@@ -3,12 +3,15 @@ import axios from "axios"
 import createBookWithID from "../../utils/createBookID"
 import { setError } from "./errorSlice"
 
-const initialState = []
+const initialState = {
+  books: [],
+  isLoadingViaAPI: false,
+}
 
 export const fetchBook = createAsyncThunk(
-  'book/fetchBook',
+  "book/fetchBook",
   async (url, thunkAPI) => {
-    try {   
+    try {
       const res = await axios.get(url)
       return res.data
     } catch (error) {
@@ -23,31 +26,33 @@ const booksSlice = createSlice({
   initialState,
   reducers: {
     addBook: (state, action) => {
-      state.push(action.payload)
+      state.books.push(action.payload)
     },
     deleteBook: (state, action) => {
-      return state.filter((book) => book.id !== action.payload)
+      return {
+        ...state,
+        books: state.books.filter((book) => book.id !== action.payload),
+      }
     },
     toggleFavorite: (state, action) => {
-      return state.map((book) =>
-        book.id === action.payload
-          ? { ...book, isFavorite: !book.isFavorite }
-          : book
-      )
+      state.books.forEach((book) => {
+        if (book.id === action.payload) {
+          book.isFavorite = !book.isFavorite
+        }
+      })
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchBook.fulfilled, (state, action) => {
       if (action.payload.title && action.payload.author) {
-        state.push(createBookWithID(action.payload, 'API'))
+        state.books.push(createBookWithID(action.payload, "API"))
       }
     })
-  }
+  },
 })
-
 
 export const { addBook, deleteBook, toggleFavorite } = booksSlice.actions
 
-export const selectBooks = (state) => state.books
+export const selectBooks = (state) => state.books.books
 
 export default booksSlice.reducer
